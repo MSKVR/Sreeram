@@ -1,155 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sreeram Sealing Solutions</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        header {
-            background-color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            flex-wrap: wrap;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .logo img {
-            height: 140px;
-            width: auto;
-            margin-right: 10px;
-        }
-        .contact-info {
-            text-align: right;
-            font-size: 14px;
-            color: #555;
-        }
-        nav {
-            margin-top: 5px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: 600;
-        }
-        section {
-            padding: 40px 20px;
-            max-width: 1000px;
-            margin: auto;
-        }
-        h2 {
-            color: #007BFF;
-            margin-bottom: 20px;
-        }
-        .product-images {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .product-images img {
-            width: 100%;
-            max-width: 200px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #fff;
-            border-top: 1px solid #ddd;
-            margin-top: 40px;
-        }
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .contact-info {
-                text-align: left;
-                margin-top: 10px;
-            }
-            nav {
-                justify-content: flex-start;
-                margin-top: 10px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sreeram Sealing Solutions — Single Page Demo</title>
+  <meta name="description" content="Industrial seals and engineering products — single page demo site." />
+  <style>
+    :root {
+      --brand: #ff7a00; /* primary orange */
+      --brand-dark: #e26600;
+      --text: #1a1a1a;
+      --muted: #666;
+      --bg: #ffffff;
+      --light: #f7f7f7;
+      --accent: #0ea5e9; /* sky blue for links */
+    }
+
+    /* Base */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); background: var(--bg); }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(1200px, 92%); margin-inline: auto; }
+
+    /* Top Bar */
+    .topbar { background: var(--bg); border-bottom: 1px solid #eee; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; }
+    .brand img { height: 48px; width: 48px; object-fit: contain; }
+    .brand h1 { font-size: 1.25rem; color: var(--brand); margin: 0; font-weight: 800; letter-spacing: .2px; }
+    .contact-links { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .contact-links a { font-size: .95rem; padding: 8px 12px; border: 1px solid #eee; border-radius: 999px; }
+    .contact-links a:hover { border-color: var(--brand); color: var(--brand); }
+
+    /* Nav */
+    .nav { background: var(--brand); position: sticky; top: 0; z-index: 50; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .menu { display: flex; gap: 24px; list-style: none; margin: 0; padding: 12px 0; }
+    .menu a { color: #fff; font-weight: 600; }
+    .menu a:hover { text-decoration: underline; }
+    .hamburger { display: none; background: transparent; border: 0; color: #fff; font-size: 28px; padding: 10px; }
+
+    /* Mobile menu */
+    .mobile-menu { display: none; background: var(--brand); }
+    .mobile-menu ul { list-style: none; margin: 0; padding: 0; }
+    .mobile-menu a { display: block; padding: 12px 16px; color: #fff; border-top: 1px solid rgba(255,255,255,.2); }
+
+    /* Hero Slider */
+    .hero { position: relative; height: clamp(300px, 55vh, 520px); overflow: hidden; }
+    .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 900ms ease-in-out; }
+    .slide.active { opacity: 1; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; }
+    .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,.15)); }
+    .hero-text { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); color: #fff; background: rgba(0,0,0,.45); padding: 12px 18px; border-radius: 8px; font-size: clamp(18px, 2.6vw, 28px); font-weight: 700; letter-spacing: .2px; }
+    .arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,.45); color: #fff; border: 0; height: 44px; width: 44px; border-radius: 50%; font-size: 22px; cursor: pointer; }
+    .arrow:hover { background: rgba(0,0,0,.6); }
+    .arrow.left { left: 16px; }
+    .arrow.right { right: 16px; }
+    .dots { position: absolute; left: 50%; transform: translateX(-50%); bottom: 10px; display: flex; gap: 8px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.6); cursor: pointer; }
+    .dot.active { background: #fff; }
+
+    /* Sections */
+    section { padding: clamp(40px, 7vw, 72px) 0; }
+    .section-head { text-align: center; margin-bottom: 28px; }
+    .section-title { font-size: clamp(22px, 3vw, 32px); margin: 0 0 8px; }
+    .section-sub { color: var(--muted); margin: 0; }
+
+    /* About */
+    .about { background: var(--light); }
+    .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
+    .about p { line-height: 1.7; color: #333; }
+
+    /* Products */
+    .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: #fff; border: 1px solid #eee; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.04); }
+    .card-body { padding: 14px 16px 18px; }
+    .card h3 { margin: 6px 0 6px; font-size: 1.05rem; }
+    .badge { display: inline-block; background: #f1f5f9; color: #334155; padding: 4px 8px; border-radius: 999px; font-size: .8rem; }
+
+    /* CTA Band */
+    .cta { background: linear-gradient(90deg, var(--brand), var(--brand-dark)); color: #fff; }
+    .cta-inner { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; background: #111; color: #fff; padding: 12px 16px; border-radius: 999px; font-weight: 700; }
+    .btn.light { background: #fff; color: var(--brand); }
+
+    /* Contact */
+    .contact { background: var(--light); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .form { background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px rgba(0,0,0,.04); }
+    .form label { display: block; font-weight: 600; margin: 12px 0 6px; }
+    .form input, .form textarea { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; font: inherit; }
+    .form textarea { min-height: 120px; resize: vertical; }
+    .form button { margin-top: 12px; }
+    .contact-info { background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 18px; }
+    .contact-info a { color: var(--accent); }
+
+    /* Footer */
+    footer { background: #0f172a; color: #cbd5e1; padding: 28px 0; }
+    .foot { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; }
+    .foot a { color: #e2e8f0; }
+    .copyright { border-top: 1px solid rgba(255,255,255,.08); margin-top: 18px; padding-top: 18px; text-align: center; font-size: .9rem; color: #94a3b8; }
+
+    /* Floating Buttons */
+    .whatsapp { position: fixed; right: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #fff; padding: 12px 14px; border-radius: 999px; box-shadow: 0 8px 28px rgba(0,0,0,.22); z-index: 60; font-weight: 700; }
+    .side-cta { position: fixed; right: -54px; top: 45%; transform: rotate(-90deg); background: #111; color: #fff; padding: 10px 14px; border-radius: 10px 10px 0 0; z-index: 60; font-weight: 700; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; }
+      .foot { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 760px) {
+      .contact-links { display: none; }
+      .menu { display: none; }
+      .hamburger { display: inline-block; }
+      .products-grid { grid-template-columns: 1fr; }
+      .foot { grid-template-columns: 1fr; }
+      .hero-text { left: 50%; right: 12px; transform: translateX(-50%); width: calc(100% - 24px); text-align: center; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="logo.png" alt="Sreeram Sealing Solutions Logo">
-            <div>
-                <h1 style="margin:0;">Sreeram Sealing Solutions</h1>
-                <nav>
-                    <a href="#about">About</a>
-                    <a href="#products">Products</a>
-                    <a href="#partners">Partners</a>
-                    <a href="#contact">Contact</a>
-                </nav>
-            </div>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    
+    <!-- Brand (logo + text) -->
+    <div class="brand">
+      <img src="logo.png" alt="Company logo" />
+
+      <div class="brand-text">
+        <h1>Sreeram Sealing Solutions</h1>
+        <p class="tagline">Sealing Trust, Securing Quality</p>
+      </div>
+    </div>
+
+    <!-- Contact links -->
+    <div class="contact-links">
+      <a href="tel:+919845532020">📞 +91 9845532020</a>
+      <a href="mailto:sriram.seals@gmail.com">✉ sriram.seals@gmail.com</a>
+      <a href="sms:+919845532020?&body=Call%20back%20for%20Business">📱 Request Call back</a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* brand left, contacts right */
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;  /* stack vertically */
+    line-height: 1.2;
+  }
+
+  .brand img {
+    height: 80px; 
+    width: auto; 
+    object-fit: contain;
+  }
+
+  .brand h1 {
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 0;
+    color: var(--brand);
+  }
+
+ .tagline {
+  margin: 0;
+  margin-left: 6px;   /* subtitle indentation */
+  font-size: 13px;    /* slightly smaller */
+  color: #333;        /* darker gray */
+  font-weight: 500;   /* medium weight for better visibility */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeSlideIn 4s ease-in-out infinite;
+ }
+
+  @keyframes fadeSlideIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+  }
+</style>
+
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="home">
+    <div class="container nav-inner">
+      <ul class="menu" role="menubar">
+        <li><a href="#about">About</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Open Menu">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Slider -->
+  <section class="hero" aria-label="Hero banner slider">
+    <div class="slide active">
+      <img src="banner1.png" alt="O'Rings" />
+      <div class="overlay" aria-hidden="true"></div>
+      <div class="hero-text">O'rings</div>
+    </div>
+    <div class="slide">
+      <img src="banner2.png" alt="Industrial Seal Solutions banner" />
+      <div class="overlay" aria-hidden="true"></div>
+      <div class="hero-text">Industrial Seal Solutions</div>
+    </div>
+    <div class="slide">
+      <img src="banner3.png" alt="Custom Engineering Products banner" />
+      <div class="overlay" aria-hidden="true"></div>
+      <div class="hero-text">Rubber Gaskets</div>
+    </div>
+    <button class="arrow left" id="prev" aria-label="Previous slide">‹</button>
+    <button class="arrow right" id="next" aria-label="Next slide">›</button>
+    <div class="dots" id="dots" aria-label="Slide indicators"></div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="about">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">We are your Trusted Partners </h2>
+        <p class="section-sub1"><b> for Industrial <i> Seals, Rubber Gaskets & Pumps </i></b></p>
+      
+      </div>
+      <div class="about-grid">
+        <div>
+          <p>
+            Established in 2010, <b>Sreeram Sealing Solutions </b> a trusted name in trading and manufacturing of industrial seals, rubber components & Pumps. We strive to source quality rubber components for high-level applications at competitive rates and invite collaboration to share knowledge and technology.
+          </p>
+          <p>
+            We are authorized supplier for KSB Pumps, Johnson Pumps, and Grundfos Pumps.
+          </p>
+          <a class="btn" href="#contact">Get a Quote →</a>
         </div>
+        <div>
+          <img src="about.png" alt="About our company" />
+        </div>
+      </div>
+    </div>
+    <style>
+     .about img {
+      height: auto; 
+      width: auto; 
+      object-fit: contain;
+    }
+  .section-sub1{
+  display: inline-block;
+  overflow: hidden;
+  border-right: 2px solid #333;
+  white-space: nowrap;
+  animation: typing 4s steps(30, end) infinite alternate,
+             blink 0.7s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+    </style> 
+     
+  </section>
+
+  <!-- Products -->
+  <section id="products">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Products</h2>
+        <p class="section-sub">Featured categories — replace with your catalog.</p>
+      </div>
+      <div class="products-grid">
+        <article class="card">
+          <img src="assets/prod1.jpg" alt="Mechanical Seal" />
+          <div class="card-body">
+            <h3>Mechanical Seals</h3>
+            <span class="badge">Category</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="assets/prod2.jpg" alt="Pump Seal" />
+          <div class="card-body">
+            <h3>Pump Seals</h3>
+            <span class="badge">Category</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="assets/prod3.jpg" alt="Custom Rings" />
+          <div class="card-body">
+            <h3>Custom Rings</h3>
+            <span class="badge">Category</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="assets/prod4.jpg" alt="Gaskets" />
+          <div class="card-body">
+            <h3>Gaskets</h3>
+            <span class="badge">Category</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="assets/prod5.jpg" alt="Industrial Components" />
+          <div class="card-body">
+            <h3>Industrial Components</h3>
+            <span class="badge">Category</span>
+          </div>
+        </article>
+        <article class="card">
+          <img src="assets/prod6.jpg" alt="Engineering Parts" />
+          <div class="card-body">
+            <h3>Engineering Parts</h3>
+            <span class="badge">Category</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services / CTA strip -->
+  <section id="services" class="cta">
+    <div class="container cta-inner">
+      <div>
+        <h2 class="section-title" style="color:#fff; margin: 0 0 6px;">Services</h2>
+        <p class="section-sub" style="color:#fff; opacity:.9; margin:0;">Seal selection, retrofits, onsite inspections, and rapid replacements.</p>
+     
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-sub">We usually respond within 1 business day.</p>
+      </div>
+      <div class="contact-grid">
+        <form class="form" onsubmit="event.preventDefault(); alert('Thanks! We\'ll get back to you.'); this.reset();">
+          <label for="name">Name</label>
+          <input id="name" name="name" required placeholder="Your name" />
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com" />
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+91 …" />
+          <label for="msg">Message</label>
+          <textarea id="msg" name="message" placeholder="Tell us what you need"></textarea>
+          <button class="btn" type="submit">Send Message</button>
+        </form>
         <div class="contact-info">
-            <strong>Call:</strong> +91 98455 32020<br>
-            <strong>Email:</strong> sriram.seals@gmail.com
+          <h3 style="margin-top:0">Reach us</h3>
+          <p><strong>Phone:</strong> <a href="tel:+919845532020">+91 9845532020</a></p>
+          <p><strong>Email:</strong> <a href="sriram.seals@gmail.com">sriram.seals@gmail.com</a></p>
+          <p><strong>Address:</strong> Thindlu,Vidyaranyapura,Bangalore,Karnataka India</p>
+          <p><strong>WhatsApp:</strong> <a href="https://wa.me/919845532020" target="_blank" rel="noopener">Chat on WhatsApp</a></p>
         </div>
-    </header>
+      </div>
+    </div>
+  </section>
 
-    <section id="about">
-        <h2>About Us</h2>
-        <p>Established in 2010, Sreeram Sealing Solutions is a trusted name in trading and manufacturing of industrial seals and rubber components. We strive to source quality rubber components for high-level applications at competitive rates and invite collaboration to share knowledge and technology.</p>
-    </section>
+  <!-- Footer -->
+  <footer>
+    <div class="container foot">
+      <div>
+        <h4 style="margin:0 0 10px">Sreeram Sealing Solutions</h4>
+        <p style="margin:0">Quality industrial sealing solutions.</p>
+      </div>
+      <div>
+        <h4 style="margin:0 0 10px">Quick Links</h4>
+        <p><a href="#about">About</a></p>
+        <p><a href="#products">Products</a></p>
+        <p><a href="#contact">Contact</a></p>
+      </div>
+      <div>
+        <h4 style="margin:0 0 10px">Support</h4>
+        <p><a href="mailto:support@example.com">Email Support</a></p>
+        <p><a href="#contact">Request Quote</a></p>
+      </div>
+    </div>
+    <div class="container copyright">© <span id="year"></span> Sreeram Sealing Solutions. All rights reserved.</div>
+  </footer>
 
-    <section id="products">
-        <h2>Products</h2>
-        <h3>O-Rings</h3>
-        <p>PTFE encapsulated, Elastomer, FEP, AFLAS, EPDM, Silicon, PU Seals, Wiper Seals, U-Seals, Piston Seals</p>
-        <div class="product-images">
-            <img src="orings1.png" alt="O-Rings Set">
-            <img src="orings2.png" alt="Various O-Rings">
-            <img src="orings3.jpg" alt="Industrial O-Rings">
-        </div>
-        <h3>Industrial Seals</h3>
-        <p>Cartridge mechanical seals, bearing isolators, bellow seals, spring seals, silicon carbide rings, hydraulic oil seals</p>
-        <h3>Rubber Gaskets</h3>
-        <p>Precision gaskets, PTFE, FEP camlock gaskets, extrusions, cords, diaphragms</p>
-    </section>
+  <!-- Floating Buttons -->
+  <a class="whatsapp" href="https://wa.me/919845532020" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬 WhatsApp Us</a>
+  <a class="side-cta" href="#contact" aria-label="Submit Your Requirement">Submit Requirement</a>
 
-    <section id="partners">
-        <h2>Authorized Partnerships</h2>
-        <p>Authorized supplier for KSB Pumps, Johnson Pumps, and Grundfos Pumps.</p>
-    </section>
+  <script>
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display = 'none'));
 
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p><strong>Proprietor:</strong> Rajeswar.PR</p>
-        <p><strong>Address:</strong> No.105, Ramachandra Residency, Thindlu, Vidyaranyapura PO, Bangalore-560097</p>
-        <p><strong>Phone:</strong> +91 98455 32020</p>
-        <p><strong>Email:</strong> sriram.seals@gmail.com</p>
-    </section>
+    // Simple slider
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const dotsWrap = document.getElementById('dots');
+    let index = 0; let timer;
 
-    <footer>
-        &copy; 2025 Sreeram Sealing Solutions. All rights reserved.
-    </footer>
+    function renderDots() {
+      dotsWrap.innerHTML = '';
+      slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'dot' + (i === index ? ' active' : '');
+        d.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        d.addEventListener('click', () => { goTo(i); });
+        dotsWrap.appendChild(d);
+      });
+    }
+
+    function setActive(i) {
+      slides.forEach(s => s.classList.remove('active'));
+      slides[i].classList.add('active');
+      Array.from(dotsWrap.children).forEach((dot, di) => {
+        dot.classList.toggle('active', di === i);
+      });
+    }
+
+    function goTo(i) {
+      index = (i + slides.length) % slides.length;
+      setActive(index);
+      restart();
+    }
+    function next() { goTo(index + 1); }
+    function prev() { goTo(index - 1); }
+
+    function start() { timer = setInterval(next, 3500); }
+    function stop() { clearInterval(timer); }
+    function restart() { stop(); start(); }
+
+    nextBtn.addEventListener('click', next);
+    prevBtn.addEventListener('click', prev);
+    document.querySelector('.hero').addEventListener('mouseenter', stop);
+    document.querySelector('.hero').addEventListener('mouseleave', start);
+
+    renderDots();
+    setActive(0);
+    start();
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
